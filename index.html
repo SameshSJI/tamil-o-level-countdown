@@ -3,27 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tamil O Level Countdown</title>
+    <title>GCE Tamil O Level Countdown</title>
     <script>
-        function updateTime() {
+        // Get current date and time
+        function getCurrentDateTime() {
             const now = new Date();
-            const utcDate = now.toISOString().split('T')[0];
-            const utcTime = now.toISOString().split('T')[1].split('.')[0]; // HH:MM:SS (without milliseconds)
-            const milliseconds = now.getMilliseconds();
-            const liveTime = `${utcDate} ${utcTime}.${milliseconds}`;
-            document.getElementById('live-time').innerText = liveTime;
+            return now.toUTCString();
         }
-        setInterval(updateTime, 100);
+
+        // Countdown function
+        function countdown(examDate) {
+            const countDownDate = new Date(examDate).getTime();
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            const milliseconds = Math.floor((distance % 1000));
+
+            return `${days}:${hours}:${minutes}:${seconds}:${milliseconds}`;
+        }
+
+        // Update countdowns
+        function updateCountdowns() {
+            document.getElementById('currentDatetime').innerText = getCurrentDateTime();
+            document.getElementById('writtenExamCountdown').innerText = countdown('2026-06-02T09:00:00Z'); // Written Examination
+            document.getElementById('listeningExamCountdown').innerText = countdown('2026-07-07T15:00:00Z'); // Listening Comprehension
+            document.getElementById('oralExamCountdown').innerText = countdown('2026-07-13T15:00:00Z'); // Oral Examination
+        }
+
+        setInterval(updateCountdowns, 100);
     </script>
 </head>
 <body>
-    <h1>தமிழ் O லெவல் நிகழ்வுகள்</h1>
-    <div>
-        <p>நேரம்: <span id="live-time"></span></p>
-        <p>எக்ஸாம் 1: <strong>தமிழ்மொழி</strong> - 2026-02-08</p>
-        <p>எக்ஸாம் 2: <strong>மதவியாசம்</strong> - 2026-02-09</p>
-        <p>எக்ஸாம் 3: <strong>எண்கணிதம்</strong> - 2026-02-10</p>
-        <p>எக்ஸாம் 4: <strong>விளையாட்டு அறிவியல்</strong> - 2026-02-11</p>
-    </div>
+    <h1>GCE Tamil O Level Countdown</h1>
+    <p><strong>Current Date and Time (UTC):</strong> <span id="currentDatetime"></span></p>
+    <h2>Upcoming Exams Countdown</h2>
+    <ul>
+        <li>Written Examination: <span id="writtenExamCountdown"></span></li>
+        <li>Listening Comprehension: <span id="listeningExamCountdown"></span></li>
+        <li>Oral Examination: <span id="oralExamCountdown"></span></li>
+    </ul>
 </body>
 </html>
