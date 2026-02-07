@@ -1,260 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ta">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tamil 'O' Level Countdown Timer</title>
-  <style>
-    body {
-      font-family: 'Courier New', monospace;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-    }
-
-    .container {
-      background-color: rgba(0, 0, 0, 0.8);
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      max-width: 900px;
-      width: 100%;
-    }
-
-    h1 {
-      text-align: center;
-      margin-top: 0;
-      font-size: 2.5em;
-      margin-bottom: 30px;
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .events-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .event {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: rgba(102, 126, 234, 0.1);
-      border-left: 4px solid #f5576c;
-      padding: 20px;
-      border-radius: 10px;
-      transition: all 0.3s ease;
-    }
-
-    .event:hover {
-      background-color: rgba(102, 126, 234, 0.2);
-      transform: translateX(5px);
-    }
-
-    .event.completed {
-      border-left-color: #4CAF50;
-      background-color: rgba(76, 175, 80, 0.1);
-    }
-
-    .event-info h3 {
-      margin: 0 0 5px 0;
-      font-size: 1.2em;
-      color: #fff;
-    }
-
-    .event-info p {
-      margin: 0;
-      color: #ddd;
-      font-size: 0.95em;
-    }
-
-    .countdown {
-      font-size: 1.8em;
-      font-weight: bold;
-      color: #4CAF50;
-      text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
-      letter-spacing: 2px;
-      text-align: right;
-      min-width: 250px;
-    }
-
-    .countdown.completed {
-      color: #28a745;
-      font-size: 1.5em;
-    }
-
-    .current-time {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 1.1em;
-      color: #ddd;
-      background-color: rgba(102, 126, 234, 0.2);
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-
-      h1 {
-        font-size: 1.8em;
-      }
-
-      .event {
-        flex-direction: column;
-        gap: 10px;
-        align-items: flex-start;
-      }
-
-      .countdown {
-        min-width: auto;
-        text-align: left;
-      }
-
-      .event-info h3 {
-        font-size: 1em;
-      }
-
-      .countdown {
-        font-size: 1.3em;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tamil O Level Countdown</title>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const utcDate = now.toISOString().split('T')[0];
+            const utcTime = now.toISOString().split('T')[1].split('.')[0]; // HH:MM:SS (without milliseconds)
+            const milliseconds = now.getMilliseconds();
+            const liveTime = `${utcDate} ${utcTime}.${milliseconds}`;
+            document.getElementById('live-time').innerText = liveTime;
+        }
+        setInterval(updateTime, 100);
+    </script>
 </head>
 <body>
-
-  <div class="container">
-    <h1>📚 Tamil 'O' Level Exams</h1>
-
-    <div class="current-time">
-      Current Time: <span id="currentTime">--:--:--</span>
+    <h1>தமிழ் O லெவல் நிகழ்வுகள்</h1>
+    <div>
+        <p>நேரம்: <span id="live-time"></span></p>
+        <p>எக்ஸாம் 1: <strong>தமிழ்மொழி</strong> - 2026-02-08</p>
+        <p>எக்ஸாம் 2: <strong>மதவியாசம்</strong> - 2026-02-09</p>
+        <p>எக்ஸாம் 3: <strong>எண்கணிதம்</strong> - 2026-02-10</p>
+        <p>எக்ஸாம் 4: <strong>விளையாட்டு அறிவியல்</strong> - 2026-02-11</p>
     </div>
-
-    <div class="events-container" id="eventsContainer">
-      <!-- Events will be generated here by JavaScript -->
-    </div>
-  </div>
-
-  <script>
-    // Define all exam events
-    const events = [
-      {
-        name: "Written Examination",
-        date: "2 June",
-        time: "AM",
-        icon: "📝",
-        year: 2026,
-        month: 5,
-        day: 2,
-        hour: 9,
-        minute: 0,
-        second: 0
-      },
-      {
-        name: "Listening Comprehension (LC)",
-        date: "7 July",
-        time: "PM",
-        icon: "🎧",
-        year: 2026,
-        month: 6,
-        day: 7,
-        hour: 14,
-        minute: 0,
-        second: 0
-      },
-      {
-        name: "Oral Examination",
-        date: "13-17 July",
-        time: "PM/Full Days",
-        icon: "🎤",
-        year: 2026,
-        month: 6,
-        day: 13,
-        hour: 14,
-        minute: 0,
-        second: 0
-      }
-    ];
-
-    const container = document.getElementById('eventsContainer');
-    const currentTimeDisplay = document.getElementById('currentTime');
-
-    // Create event elements
-    events.forEach((event, index) => {
-      const eventEl = document.createElement('div');
-      eventEl.className = 'event';
-      eventEl.id = `event-${index}`;
-      
-      eventEl.innerHTML = `
-        <div class="event-info">
-          <h3>${event.icon} ${event.name}</h3>
-          <p>${event.date} (${event.time})</p>
-        </div>
-        <div class="countdown" id="countdown-${index}">
-          --:--:--:--:---
-        </div>
-      `;
-      
-      container.appendChild(eventEl);
-    });
-
-    // Update countdowns
-    function updateCountdowns() {
-      const now = new Date();
-      
-      // Update current time display
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      currentTimeDisplay.textContent = `${hours}:${minutes}:${seconds}`;
-
-      events.forEach((event, index) => {
-        const eventDate = new Date(event.year, event.month, event.day, event.hour, event.minute, event.second);
-        const timeRemaining = eventDate - now;
-
-        const countdownEl = document.getElementById(`countdown-${index}`);
-        const eventEl = document.getElementById(`event-${index}`);
-
-        if (timeRemaining < 0) {
-          // Event has passed
-          countdownEl.textContent = "✅ Completed";
-          countdownEl.className = 'countdown completed';
-          eventEl.classList.add('completed');
-        } else {
-          // Calculate days, hours, minutes, seconds, milliseconds
-          const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-          const milliseconds = Math.floor(timeRemaining % 1000);
-
-          // Format: DD:HH:MM:SS:MSMS
-          const formatted = `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(3, '0')}`;
-          
-          countdownEl.textContent = formatted;
-          countdownEl.className = 'countdown';
-          eventEl.classList.remove('completed');
-        }
-      });
-    }
-
-    // Update every 100ms for smooth millisecond display
-    setInterval(updateCountdowns, 100);
-    
-    // Initial update
-    updateCountdowns();
-  </script>
-
 </body>
 </html>
