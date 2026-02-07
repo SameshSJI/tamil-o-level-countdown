@@ -3,48 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GCE Tamil O Level Countdown</title>
+    <title>Countdown Timer</title>
     <script>
-        // Get current date and time
-        function getCurrentDateTime() {
+        function updateTime() {
             const now = new Date();
-            return now.toUTCString();
+            const milliseconds = now.getMilliseconds();
+            const timeString = now.toISOString();
+            document.getElementById('current-time').innerText = `Current Time (UTC): ${timeString} :${milliseconds}`;
         }
-
-        // Countdown function
-        function countdown(examDate) {
-            const countDownDate = new Date(examDate).getTime();
-            const now = new Date().getTime();
-            const distance = countDownDate - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            const milliseconds = Math.floor((distance % 1000));
-
-            return `${days}:${hours}:${minutes}:${seconds}:${milliseconds}`;
+        
+        function startCountdown(endDate) {
+            const countdownElement = document.getElementById('countdown');
+            const countdownInterval = setInterval(() => {
+                const now = new Date();
+                const distance = endDate - now;
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.innerText = 'Countdown has ended.';
+                    return;
+                }
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                const ms = Math.floor((distance % 1000) / 10);
+                countdownElement.innerText = `${days}:${hours}:${minutes}:${seconds}:${ms}`;
+            }, 10);
         }
-
-        // Update countdowns
-        function updateCountdowns() {
-            document.getElementById('currentDatetime').innerText = getCurrentDateTime();
-            document.getElementById('writtenExamCountdown').innerText = countdown('2026-06-02T09:00:00Z'); // Written Examination
-            document.getElementById('listeningExamCountdown').innerText = countdown('2026-07-07T15:00:00Z'); // Listening Comprehension
-            document.getElementById('oralExamCountdown').innerText = countdown('2026-07-13T15:00:00Z'); // Oral Examination
-        }
-
-        setInterval(updateCountdowns, 100);
+        
+        window.onload = function() {
+            updateTime();
+            const countdownDate = new Date('2026-02-08T03:35:49Z');
+            startCountdown(countdownDate);
+            setInterval(updateTime, 1000);
+        };
     </script>
 </head>
 <body>
-    <h1>GCE Tamil O Level Countdown</h1>
-    <p><strong>Current Date and Time (UTC):</strong> <span id="currentDatetime"></span></p>
-    <h2>Upcoming Exams Countdown</h2>
-    <ul>
-        <li>Written Examination: <span id="writtenExamCountdown"></span></li>
-        <li>Listening Comprehension: <span id="listeningExamCountdown"></span></li>
-        <li>Oral Examination: <span id="oralExamCountdown"></span></li>
-    </ul>
+    <h1>கணக்கு</h1>
+    <p id="current-time"></p>
+    <p id="countdown"></p>
 </body>
 </html>
